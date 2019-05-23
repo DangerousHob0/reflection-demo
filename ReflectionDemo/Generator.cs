@@ -8,24 +8,25 @@ namespace ReflectionDemo
 {
     class Generator
     {
-        public static dynamic GetSurprise(int _case) {
+        public enum SupriseTypes: byte
+        { TypeOne, TypeTwo, TypeThree }
 
-            switch (_case)
+        public static dynamic GetSurprise()
+        {
+            Array values = Enum.GetValues(typeof(SupriseTypes));
+            Random r = new Random();
+            SupriseTypes type = (SupriseTypes)values.GetValue(r.Next(values.Length));
+
+            switch (type)
             {
-                case 1: {
+                case SupriseTypes.TypeOne:
                     return new Person() { Name = "John" };
-                }
-                case 2:
-                {
-                    return new { Id = 2, Name = "Ivan", Age = 30 };
-                }
-                case 3:
-                {
-                    return new { Data = new Person() { Name = "Yurii" }, Process = new Action(Generator.PrintAPerson) };
-                }
-                default:
-                return null;
+                case SupriseTypes.TypeTwo:
+                    return new { Id = 2, Name = "Ivan", Age = 30};
+                case SupriseTypes.TypeThree:
+                    return new { Data = new Person() { Name = "Yurii" }, Process = new Action(Generator.PrintAPerson) };       
             }
+            return null;
         }
 
         public static void PrintAPerson()
